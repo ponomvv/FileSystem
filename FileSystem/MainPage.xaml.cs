@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.Storage;
 
 // Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x419
 
@@ -26,5 +27,17 @@ namespace FileSystem
         {
             this.InitializeComponent();
         }
-    }
+
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
+            {
+            StorageFolder installedLocation = Windows.ApplicationModel.Package.Current.InstalledLocation;
+            StorageFolder folder = await installedLocation.GetFolderAsync("data");
+            IReadOnlyList<StorageFile> files = await folder.GetFilesAsync();
+            filesList.Items.Add($"Содержимое папки {folder.DisplayName}");
+            foreach  (StorageFile file in files)
+                {
+                filesList.Items.Add(file.Name);
+                }
+            }
+        }
 }

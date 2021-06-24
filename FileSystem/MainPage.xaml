@@ -9,6 +9,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-
+        <ListBox x:Name="filesList"
+                 Loaded="Page_Loaded" />
     </Grid>
 </Page>
