@@ -30,10 +30,10 @@ namespace FileSystem
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
             {
-            StorageFolder installedLocation = Windows.ApplicationModel.Package.Current.InstalledLocation;
-            StorageFolder folder = await installedLocation.GetFolderAsync("data");
-            IReadOnlyList<StorageFile> files = await folder.GetFilesAsync();
-            filesList.Items.Add($"Содержимое папки {folder.DisplayName}");
+            //Получаем текужую папку приложения
+
+            StorageFolder folder = KnownFolders.PicturesLibrary;
+            IReadOnlyList<StorageFile> files = await folder.GetFilesAsync();          
             foreach  (StorageFile file in files)
                 {
                 filesList.Items.Add(file.Name);
