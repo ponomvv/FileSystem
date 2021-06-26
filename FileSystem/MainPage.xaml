@@ -8,26 +8,21 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton x:Name="saveButton"
+                          Label="Сохранить"
+                          Icon="Save"
+                          Click="saveButton_Click" />
+            <AppBarButton x:Name="openButton"
+                          Label="Открыть"
+                          Icon="OpenFile"
+                          Click="openButton_Click" />
+        </CommandBar>
+    </Page.BottomAppBar>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <RelativePanel>
-            <Button x:Name="saveButton"
-                    Click="saveButton_Click"
-                    Content="Сохранить"
-                    RelativePanel.AlignLeftWithPanel="True"
-                    Margin="10" />
-            <Button x:Name="openButton"
-                    Click="openButton_Click"
-                    Content="Открыть"
-                    RelativePanel.AlignRightWithPanel="True"
-                    Margin="10" />
-        </RelativePanel>
         <TextBox x:Name="myTextBox"
-                 Grid.Row="1"
-                 Margin="10" />
-
+                 VerticalAlignment="Stretch"
+                 TextWrapping="Wrap" />
     </Grid>
 </Page>

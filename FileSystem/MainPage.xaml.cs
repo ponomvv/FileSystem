@@ -13,6 +13,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.Storage;
+using Windows.Storage.Pickers;
+using static System.Net.Mime.MediaTypeNames;
 
 // Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x419
 
@@ -30,25 +32,35 @@ namespace FileSystem
 
         private async void saveButton_Click(object sender, RoutedEventArgs e)
             {
-            string text = myTextBox.Text;
-            //Получаем локальную папку
-            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
-            //Создаем файл hello.txt
-            StorageFile helloFile = await localFolder.CreateFileAsync("hello.txt", CreationCollisionOption.ReplaceExisting);
-            //Запись в файл
-            await FileIO.WriteTextAsync(helloFile, text);
-            await new Windows.UI.Popups.MessageDialog("Файл создан и сохранен").ShowAsync();
+            var savePicker = new FileSavePicker();
+            //место для сохранения по умолчанию
+            savePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+            //устанавливаем типы файлов для сохранения
+            savePicker.FileTypeChoices.Add("Plain Text", new List<string>() { ".txt" });
+            //устанавливаем имя нового файла по умолчанию
+            savePicker.SuggestedFileName = "New Document";
+            savePicker.CommitButtonText = "Сохранить";
+
+            var new_file = await savePicker.PickSaveFileAsync();
+            if(new_file!=null)
+                {
+                await FileIO.WriteTextAsync(new_file, myTextBox.Text);
+                }
             }
 
         private async void openButton_Click(object sender, RoutedEventArgs e)
             {
-            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
-            //получаем файл
-            StorageFile helloFile = await localFolder.GetFileAsync("hello.txt");
-            //читаем файл
-            string text = await FileIO.ReadTextAsync(helloFile);
-            myTextBox.Text = text;
-            await new Windows.UI.Popups.MessageDialog("Файл открыт").ShowAsync();
+            FileOpenPicker openPicker = new FileOpenPicker();
+            openPicker.ViewMode = PickerViewMode.Thumbnail;
+            openPicker.SuggestedStartLocation = PickerLocationId.Desktop;
+            openPicker.CommitButtonText = "Открыть";
+            openPicker.FileTypeFilter.Add(".txt");
+            var file = await openPicker.PickSingleFileAsync();
+
+            if(file!=null)
+                {
+                myTextBox.Text = await FileIO.ReadTextAsync(file);
+                }
             }
         }
 }
