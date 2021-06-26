@@ -21,27 +21,34 @@ namespace FileSystem
     /// <summary>
     /// Пустая страница, которую можно использовать саму по себе или для перехода внутри фрейма.
     /// </summary>
-    public sealed partial class MainPage : Page
-    {
-        public MainPage()
+    public sealed partial class MainPage: Page
         {
-            this.InitializeComponent();
-        }
-
-        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        public MainPage()
             {
-            //Получаем текужую папку приложения
+            this.InitializeComponent();
+            }
 
-            StorageFolder folder = KnownFolders.PicturesLibrary;
-            IReadOnlyList<StorageFile> files = await folder.GetFilesAsync();          
-            foreach  (StorageFile file in files)
-                {
-                filesList.Text += $"{file.Name}\n";
-                var props = await file.GetBasicPropertiesAsync();
-                filesList.Text += $"Дата изменения: {props.DateModified}\n";
-                filesList.Text += $"Размер: {props.Size}\n\n";
+        private async void saveButton_Click(object sender, RoutedEventArgs e)
+            {
+            string text = myTextBox.Text;
+            //Получаем локальную папку
+            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+            //Создаем файл hello.txt
+            StorageFile helloFile = await localFolder.CreateFileAsync("hello.txt", CreationCollisionOption.ReplaceExisting);
+            //Запись в файл
+            await FileIO.WriteTextAsync(helloFile, text);
+            await new Windows.UI.Popups.MessageDialog("Файл создан и сохранен").ShowAsync();
+            }
 
-                }
+        private async void openButton_Click(object sender, RoutedEventArgs e)
+            {
+            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+            //получаем файл
+            StorageFile helloFile = await localFolder.GetFileAsync("hello.txt");
+            //читаем файл
+            string text = await FileIO.ReadTextAsync(helloFile);
+            myTextBox.Text = text;
+            await new Windows.UI.Popups.MessageDialog("Файл открыт").ShowAsync();
             }
         }
 }

@@ -6,10 +6,28 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-      Loaded="Page_Loaded">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <TextBlock x:Name="filesList" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <RelativePanel>
+            <Button x:Name="saveButton"
+                    Click="saveButton_Click"
+                    Content="Сохранить"
+                    RelativePanel.AlignLeftWithPanel="True"
+                    Margin="10" />
+            <Button x:Name="openButton"
+                    Click="openButton_Click"
+                    Content="Открыть"
+                    RelativePanel.AlignRightWithPanel="True"
+                    Margin="10" />
+        </RelativePanel>
+        <TextBox x:Name="myTextBox"
+                 Grid.Row="1"
+                 Margin="10" />
+
     </Grid>
 </Page>
