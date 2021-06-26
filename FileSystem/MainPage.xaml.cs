@@ -36,7 +36,11 @@ namespace FileSystem
             IReadOnlyList<StorageFile> files = await folder.GetFilesAsync();          
             foreach  (StorageFile file in files)
                 {
-                filesList.Items.Add(file.Name);
+                filesList.Text += $"{file.Name}\n";
+                var props = await file.GetBasicPropertiesAsync();
+                filesList.Text += $"Дата изменения: {props.DateModified}\n";
+                filesList.Text += $"Размер: {props.Size}\n\n";
+
                 }
             }
         }
